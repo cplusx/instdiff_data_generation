@@ -443,6 +443,10 @@ def main(args):
         file_name = img_name_base
         img_meta_data['file_name'] = image_path
 
+        if os.path.exists(os.path.join(output_dir, 'label_{}.json'.format(file_name))):
+            print("SKIPPING: Found processed {} image; {}".format(num_images, file_name))
+            continue
+
         # get base output dictionary
         output = get_base_output_dict(image_pil, dataset_name, file_name, data=img_meta_data)
         image = apply_img_transform(image_pil)
