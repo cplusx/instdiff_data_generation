@@ -29,7 +29,7 @@ while true; do
         echo "Running command on GPU $CUDA_DEVICE"
         run_generation "$CUDA_DEVICE" "$current_folder_idx" &
         current_folder_idx=$((current_folder_idx+1))
-        sleep 30
+        sleep 60
     else
         # no GPU is available, sleep for a minute
         echo "No GPU available, sleeping for a minute..."
