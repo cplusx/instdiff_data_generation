@@ -1,5 +1,6 @@
-conda create -n datagen python=3.8
+conda create -n datagen python=3.8 -y
 source activate datagen
+conda install nvidia/label/cuda-12.2.1::cuda -y
 
 pip install torch torchvision torchaudio
 pip install git+https://github.com/facebookresearch/segment-anything.git
