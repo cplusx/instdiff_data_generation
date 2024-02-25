@@ -18,7 +18,6 @@ from segment_anything import (
     build_sam,
     SamPredictor
 ) 
-import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 

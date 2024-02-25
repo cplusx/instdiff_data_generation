@@ -4,9 +4,9 @@ conda install nvidia/label/cuda-12.2.1::cuda -y
 
 pip install torch torchvision torchaudio
 pip install git+https://github.com/facebookresearch/segment-anything.git
-pip install -U openmim
-pip install psutil ninja # Addresses the slow installation issue of mmcv
-mim install mmcv
+# pip install -U openmim
+# pip install psutil ninja # Addresses the slow installation issue of mmcv
+# mim install mmcv
 git clone https://github.com/IDEA-Research/GroundingDINO.git
 python -m pip install -e GroundingDINO
 pip install -U setuptools # important for RAM, or you will get error
