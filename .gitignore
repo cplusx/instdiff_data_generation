@@ -160,8 +160,9 @@ cython_debug/
 #.idea/
 
 archived
-laion_process_json
+laion_process_json*
 models
 tmp
 generated_data
 *.ttf
+GroundingDINO
