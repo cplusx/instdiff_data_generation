@@ -1,1 +1,2 @@
 aws s3 sync generated_data/ s3://asail-lablet-cv/datasets/instdiff_generated_synthetic_data_qwen/ --exact-timestamps
+aws s3 sync generated_data_512/ s3://asail-lablet-cv/datasets/instdiff_generated_synthetic_data_qwen_512/ --exact-timestamps
