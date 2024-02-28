@@ -1,4 +1,4 @@
-LAION_FOLDER="/home/ubuntu/LAION400M/laion400m-images"
+LAION_FOLDER="/home/ubuntu/LAION400M512/laion400m-images"
 folder_idx_start=1150
 folder_idx_end=1300
 
