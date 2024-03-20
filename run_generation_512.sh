@@ -1,5 +1,5 @@
-LAION_FOLDER="/home/ubuntu/LAION400M512/laion400m-images"
-folder_idx_start=1450
+LAION_FOLDER="/home/ubuntu/cjiaxin_16T/LAION400M512/laion400m-images"
+folder_idx_start=1000
 folder_idx_end=1600
 
 run_generation() {
