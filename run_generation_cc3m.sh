@@ -1,6 +1,6 @@
-LAION_FOLDER="/home/ubuntu/LAION400M/laion400m-images"
-folder_idx_start=800
-folder_idx_end=1000
+LAION_FOLDER="/home/ubuntu/LAION400M512/laion400m-images"
+folder_idx_start=1000
+folder_idx_end=1150
 
 run_generation() {
     cuda_device=$1
@@ -14,8 +14,8 @@ run_generation() {
         --box_threshold 0.25 \
         --text_threshold 0.2 \
         --iou_threshold 0.5 \
-        --train_data_path laion_process_json/process_${folder_idx}.json \
-        --output_dir "generated_data/batch_${folder_idx}" \
+        --train_data_path laion_process_json_512/process_${folder_idx}.json \
+        --output_dir "generated_data_512/batch_${folder_idx}" \
         --laion_folder "$LAION_FOLDER"
 }
 
