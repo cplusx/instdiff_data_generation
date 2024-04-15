@@ -326,7 +326,7 @@ def get_args_parser():
     parser.add_argument(
         "--use_sam_hq", action="store_true", help="using sam-hq for prediction"
     )
-    parser.add_argument("--laion_folder", type=str, default=None, help="path to image file")
+    parser.add_argument("--image_folder", type=str, default=None, help="path to image file")
     parser.add_argument("--split", default=",", type=str, help="split for text prompt")
     parser.add_argument("--openai_key", type=str, help="key for chatgpt")
     parser.add_argument("--openai_proxy", default=None, type=str, help="proxy for chatgpt")
@@ -408,9 +408,9 @@ def main(args):
     image_captions = []
     for i in range(len(data)):
         image_path = data[i]['image']
-        if args.laion_folder:
+        if args.image_folder:
             image_batch_folder, image_name = image_path.split('/')[-2:]
-            image_path = os.path.join(args.laion_folder, image_batch_folder, image_name)
+            image_path = os.path.join(args.image_folder, image_batch_folder, image_name)
         image_paths.append(image_path)
         image_captions.append(data[i]['caption'])
     # print(image_paths)

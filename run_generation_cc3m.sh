@@ -1,4 +1,4 @@
-LAION_FOLDER="/home/ubuntu/CC3M/cc3m-images"
+IMAGE_FOLDER="/home/ubuntu/CC3M/cc3m-images"
 folder_idx_start=0
 folder_idx_end=8
 
@@ -14,9 +14,9 @@ run_generation() {
         --box_threshold 0.25 \
         --text_threshold 0.2 \
         --iou_threshold 0.5 \
-        --train_data_path laion_process_json_512/process_${folder_idx}.json \
-        --output_dir "generated_data_512/batch_${folder_idx}" \
-        --laion_folder "$LAION_FOLDER"
+        --train_data_path cc3m_process_json_768/process_${folder_idx}.json \
+        --output_dir "cc3m_generated_data_768/batch_${folder_idx}" \
+        --image_folder "$IMAGE_FOLDER"
 }
 
 current_folder_idx=$folder_idx_start
