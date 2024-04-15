@@ -1,6 +1,6 @@
 LAION_FOLDER="/home/ubuntu/LAION400M/laion400m-images"
-folder_idx_start=800
-folder_idx_end=1000
+folder_idx_start=0
+folder_idx_end=200
 
 run_generation() {
     cuda_device=$1
