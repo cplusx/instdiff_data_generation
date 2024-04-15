@@ -167,3 +167,4 @@ generated_data*
 *.ttf
 GroundingDINO
 cc3m_process_json*
+cc3m_generated*
