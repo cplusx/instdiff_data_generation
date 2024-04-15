@@ -1,4 +1,4 @@
-LAION_FOLDER="/home/ubuntu/CC3M/cc3m-images"
+IMAGE_FOLDER="/home/ubuntu/CC3M/cc3m-images"
 folder_idx_start=8
 folder_idx_end=16
 
