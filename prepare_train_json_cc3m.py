@@ -4,8 +4,8 @@ import glob
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-data_dir = '/home/ubuntu/LAION400M512/laion400m-images'
-save_dir = 'laion_process_json_512'
+data_dir = '/home/ubuntu/CC3M/cc3m-images'
+save_dir = 'cc3m_process_json_768'
 
 sample_each_folder = 10000  # images in each folder, may be smaller than 10000, some images are failed
 sample_each_process_file = 100000
