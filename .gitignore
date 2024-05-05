@@ -168,3 +168,5 @@ generated_data*
 GroundingDINO
 cc3m_process_json*
 cc3m_generated*
+rccoco_val*
+rccoco_train*
