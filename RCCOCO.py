@@ -4,6 +4,8 @@ import json
 import numpy as np
 from PIL import Image
 from torch.utils.data import Dataset
+import albumentations as A
+from albumentations.pytorch.transforms import ToTensorV2
 
 class RichContextCOCODataset(Dataset):
     def __init__(
@@ -34,8 +36,21 @@ class RichContextCOCODataset(Dataset):
         self.image_size = image_size
         self.image_size_when_labeling = image_size_when_labeling
 
+        self.set_transforms()
+
     def __len__(self):
         return len(self.valid_image_paths)
+
+    def transform(self, image, bboxes):
+        return self.transform_albumatation(image=image, bboxes=bboxes)
+
+    def set_transforms(self):
+        height = width = self.image_size
+        self.transform_albumatation = A.Compose([
+            A.RandomResizedCrop(height=height, width=width, scale=(0.8, 1), ratio=(0.95, 1.05), p=1),
+            A.HorizontalFlip(p=0.5),
+            ToTensorV2(p=1.0)
+        ], bbox_params=A.BboxParams(format='coco'))
 
     def parse_label(self, label_path):
         with open(label_path, 'r') as f:
@@ -58,13 +73,11 @@ class RichContextCOCODataset(Dataset):
         
         scaled_bboxes = []
         for bbox in bboxes:
-            x1, y1, x2, y2 = bbox
-            x1, y1, x2, y2 = int(x1 * scale), int(y1 * scale), int(x2 * scale), int(y2 * scale)
+            x1, y1, w, h = bbox
+            x1, y1, w, h = int(x1 * scale), int(y1 * scale), int(w * scale), int(h * scale)
             x1 = max(0, x1)
             y1 = max(0, y1)
-            x2 = min(width - 1, x2)
-            y2 = min(height - 1, y2)
-            scaled_bboxes.append([x1, y1, x2, y2])
+            scaled_bboxes.append([x1, y1, w, h])
 
         return scaled_bboxes
 
@@ -76,14 +89,55 @@ class RichContextCOCODataset(Dataset):
 
         image = Image.open(image_path).convert('RGB')
         image = np.array(image)
-
         bboxes = self.scale_bounding_box(image.shape[0], image.shape[1], bboxes)
 
+        bboxes_with_labels = []
+        for (x1, y1, w, h), label, cate in zip(bboxes, labels, category_names):
+            bboxes_with_labels.append([x1, y1, w, h, (label, cate)])
+
+        transformed = self.transform(image, bboxes_with_labels)
+        image = transformed['image']
+        bboxes_with_labels = transformed['bboxes']
+
+        bboxes, labels, category_names = [], [], []
+        for x1, y1, w, h, (label, cate) in bboxes_with_labels:
+            bboxes.append([x1, y1, min(x1 + w, self.image_size-1), min(y1 + h, self.image_size-1)])
+            labels.append(label)
+            category_names.append(cate)
+
         return {
-            'image': image.transpose(2, 0, 1),
+            'image': image,
             'image_path': image_path,
             'caption': caption,
-            'bboxes': bboxes,
+            'bboxes': np.array(bboxes).astype(np.int16),
             'labels': labels,
             'categories': category_names
         }
+
+
+class RichContextCOCOEvalDataset(RichContextCOCODataset):
+    def transform(self, image, bboxes):
+        h, w = image.shape[:2]        
+        if h > w:
+            # padding to the right side
+            pad_size = h - w
+            image = np.pad(image, ((0, 0), (0, pad_size), (0, 0)), 'constant', constant_values=255)
+            self.pad_size = int(pad_size / h * self.image_size)
+            self.pad_side = 'right'
+        elif w > h:
+            # padding to the bottom side
+            pad_size = w - h
+            image = np.pad(image, ((0, pad_size), (0, 0), (0, 0)), 'constant', constant_values=255)
+            self.pad_size = int(pad_size / w * self.image_size)
+            self.pad_side = 'bottom'
+        else:
+            self.pad_size = 0
+            self.pad_side = 'none'
+        return self.transform_albumatation(image=image, bboxes=bboxes)
+
+    def set_transforms(self):
+        height = width = self.image_size
+        self.transform_albumatation = A.Compose([
+            A.Resize(height=height, width=width, p=1),
+            ToTensorV2(p=1.0)
+        ], bbox_params=A.BboxParams(format='coco'))
