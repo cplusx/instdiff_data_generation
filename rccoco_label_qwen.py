@@ -181,9 +181,12 @@ def get_args_parser():
     parser.add_argument(
         "--output_dir", "-o", type=str, default="outputs", required=True, help="output directory"
     )
+    parser.add_argument("--start_idx", type=int, default=0, help="starting index for processing images")
+    parser.add_argument("--end_idx", type=int, default=-1, help="ending index for processing images")
     return parser
 
 def main(args):
+    # example usage: python rccoco_label_qwen.py --split train -o rccoco_train_768 --image_size 768 --start_idx 40000 --end_idx 60000
 
     # cfg
     output_dir = args.output_dir
@@ -210,8 +213,12 @@ def main(args):
     dataset_name = 'rich-context-coco'
     # read image and captions from json file
 
+    start_idx = args.start_idx
+    end_idx = args.end_idx if args.end_idx != -1 else len(dataset)
+
     # iterate over all images
-    for batch in dataset:
+    for batch_idx in range(start_idx, end_idx):
+        batch = dataset[batch_idx]
         image_path = batch['image_path']
         image_caption = batch['caption']
         bboxes = batch['bboxes']
